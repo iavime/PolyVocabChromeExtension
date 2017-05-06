@@ -1,0 +1,17 @@
+#poly-vocab-ext-translation-popup {
+  position: fixed;
+  border: 1px solid #707070;
+  border-radius: 2px;
+  right: 10px;
+  top: 10px;
+  background-color: rgba(56,56,56,0.6);
+  color: #fcfcfc;
+  padding: 10px;
+  display: none;
+  z-index: 1000;
+  font-size: 16px;
+}
+
+#poly-vocab-ext-translation-popup.poly-vocab-ext-show {
+  display: block;
+}
