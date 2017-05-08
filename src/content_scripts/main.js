@@ -8,14 +8,23 @@ import reducer from './reducers';
 import thunk from 'redux-thunk';
 import logger from 'redux-logger';
 
+import utils from './utils'
 import * as actions from './actions';
 
 class Main {
   constructor() {
-    // Init Redux
-    let store = createStore(reducer, applyMiddleware(logger, thunk));
+    this.lang = 'ru';
+
+    let store = createStore(reducer, applyMiddleware(thunk, logger));
     this.render(App, store);
-    // Register Listeners
+    this.registerListeners(store);
+  }
+
+  registerListeners({ dispatch }) {
+    document.addEventListener('dblclick', event => {
+      const selection = utils.getSelection();
+      dispatch(actions.fetchTranslation({ initial: selection, to: this.lang }))
+    });
   }
 
   /*
