@@ -2,9 +2,10 @@
 const path = require('path');
 
 module.exports = {
-  entry: path.join(__dirname, '../src/content_scripts/app.js'),
+  entry: path.join(__dirname, '../src/content_scripts/main.js'),
   output: {
     path: path.join(__dirname, '../build/'),
+    publicPath: path.join(__dirname, '../build/'),
     filename: 'content_script.bundle.js',
     sourceMapFilename: '[name].map',
   },
@@ -15,7 +16,7 @@ module.exports = {
         exclude: [
           '../node_modules'
         ],
-        loader: 'babel-loader'
+        loader: ['babel-loader']
       }
     ]
   },
