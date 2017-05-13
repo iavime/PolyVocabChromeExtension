@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-const defaultState = {
+const DEFAULT_STATE = {
   isFetching: false,
   error: null,
   initial: null,
@@ -8,14 +8,14 @@ const defaultState = {
   translations: []
 }
 
-export default function translation(state = defaultState, action) {
+export default function translation(state = DEFAULT_STATE, action) {
   switch (action.type) {
     case "FETCH_TRANSLATION":
-      return _.assign(defaultState, { isFetching: true });
+      return _.assign(DEFAULT_STATE, { isFetching: true });
     case "FETCH_TRANSLATION_ERROR":
-      return _.assign(defaultState, { error: action.error });
+      return _.assign(DEFAULT_STATE, { error: action.error });
     case "FETCH_TRANSLATION_SUCCESS":
-      return _.assign(defaultState, mapTranslations(action));
+      return _.assign(DEFAULT_STATE, mapTranslations(action));
     default:
       return state;
   }

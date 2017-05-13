@@ -1,4 +1,6 @@
-export default function visibilityState(state = false, action) {
+const DEFAULT_STATE = false;
+
+export default function visibilityState(state = DEFAULT_STATE, action) {
   switch (action.type) {
     case 'SET_VISIBILITY':
       return action.visibility;

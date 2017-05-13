@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux'
+import Popup from './components/popup';
 
-
-export default class App extends Component {
+class App extends Component {
   constructor(props) {
     super(props);
 
@@ -13,8 +14,21 @@ export default class App extends Component {
   render() {
     return (
       <div>
-        Poly Vocab Class
+        { this.props.visibility &&
+          <Popup translations = { this.props.translation.translations }
+                 position = { this.props.popup }/>
+        }
       </div>
     )
   }
 }
+
+const mapStateToProps = state => {
+  return {
+    visibility: state.visibilityState,
+    translation: state.translation,
+    popup: state.popup
+  }
+};
+
+export default connect(mapStateToProps, {})(App);

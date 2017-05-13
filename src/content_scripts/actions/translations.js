@@ -18,14 +18,12 @@ export const fetchTranslationSucceed = ({ data, initial }) => {
   };
 }
 
-
-export const fetchTranslation = ({ initial, fromLanguage, to }) => {
+export const fetchTranslation = ({ initial, to }) => {
   return function(dispatch) {
 
     dispatch(startFetchTranslation());
 
     return API.getTranslations({ initial, to })
       .then(data => dispatch(fetchTranslationSucceed({ data, initial })))
-      .then(() => dispatch(setVisibility(true)));
   }
 }

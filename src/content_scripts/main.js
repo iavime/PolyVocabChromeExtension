@@ -11,20 +11,68 @@ import logger from 'redux-logger';
 import utils from './utils'
 import * as actions from './actions';
 
+const config = {
+  language: 'ru',
+  fonts: [{ fontFamily: 'Roboto', url: 'https://fonts.googleapis.com/css?family=Roboto' }]
+}
+
 class Main {
   constructor() {
-    this.lang = 'ru';
+    this.loadFonts(config.fonts);
 
-    let store = createStore(reducer, applyMiddleware(thunk, logger));
+    const store = createStore(reducer, applyMiddleware(thunk, logger));
+
     this.render(App, store);
     this.registerListeners(store);
   }
 
-  registerListeners({ dispatch }) {
-    document.addEventListener('dblclick', event => {
-      const selection = utils.getSelection();
-      dispatch(actions.fetchTranslation({ initial: selection, to: this.lang }))
+  registerListeners(store) {
+    this.registerDoubleClick(store);
+    this.regsterOuterClick(store);
+  }
+
+  registerDoubleClick({ dispatch }) {
+    document.addEventListener('dblclick', event => this.doubleClickHandler(dispatch, event));
+  }
+
+  regsterOuterClick({ dispatch, getState }) {
+    document.addEventListener('click', event => this.clickHandler({ dispatch, getState }, event));
+  }
+
+  doubleClickHandler(dispatch, event) {
+    const selection = utils.getSelection();
+    console.log('Click', event);
+
+    dispatch(actions.fetchTranslation({ initial: selection, to: config.language}))
+    .then(() => dispatch(actions.setPosition({ x: event.pageX, y: event.pageY })))
+    .then(() => dispatch(actions.setVisibility(true)));
+  }
+
+  clickHandler({ dispatch, getState }, event) {
+    const state = getState();
+
+    if (state.visibilityState === true) {
+      dispatch(actions.setVisibility(false));
+    }
+  }
+
+  /*
+   * Checks if font is presented, if not loads it
+   * @param fonts: Array of { fontFamily, url }
+   */
+  loadFonts(fonts) {
+    fonts.forEach(({ fontFamily, url }) => {
+      if (document.fonts.check(`1px ${fontFamily}`) == false) {
+        this.loadFont(url);
+      }
     });
+  }
+
+  loadFont(fontUrl) {
+    const link = document.createElement('link');
+    link.setAttribute('rel', 'stylesheet');
+    link.href = fontUrl;
+    document.head.appendChild(link);
   }
 
   /*
